@@ -1,0 +1,17 @@
+#! /usr/bin/zsh
+
+uze cgi --params
+
+pug <<.
+| HTTP/1.1 200 OK
+| Content-Type: text/html
+| Connection: Closed
+|
+|
+doctype html
+html
+    head
+        title hello darkness
+    body
+        h1 hello ${USER:=mec}, tu m'as bien dit  "${Q[greetings]:=hello}" ?
+.

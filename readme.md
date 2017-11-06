@@ -1,0 +1,1 @@
+# CGI wrapper for zsh
