@@ -3,10 +3,10 @@ uze json
 
 detect_numbers () {
     @ ( 12 -12 .0 0 .00 1.00 ) {
-        json/enode/_isanum $it
+        json/encode/_isanum $it
         ok "$it is a num" }
     @ ( "the prisonner" "zero" '' UID RANDOM ) {
-        json/enode/_isanum $it
+        json/encode/_isanum $it
         not_ok "$it is not a num" } }
 
 enode_simple_structures () {
@@ -15,8 +15,8 @@ enode_simple_structures () {
     local got
     % ( fields '[true,"zeus",0,"/bin/zsh"]'
         user '{"login":"zeus","shell":"/bin/zsh","id":0}') {
-        json/enode $k | read got
-        is $got $v "json/enode k (is a ${(Pt)k%-*})" ||
+        json/encode $k | read got
+        is $got $v "json/encode k (is a ${(Pt)k%-*})" ||
             note "got      ->$got<-" "expected ->$v<-"
     }
 }
