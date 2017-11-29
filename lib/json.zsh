@@ -3,34 +3,29 @@ json/encode/_isanum () [[ -n ${1:-} && $1 == ([+-]#[0-9]#.#[0-9]#) ]]
 # TAP/prove isa_testing
 
 json/encode/scalar () {
-    case ${(P)1} {
-        (true|false) it=${(P)1}; return  ;;
-    }
-    json/encode/_isanum ${(P)1} && {it=${(P)1}; return}
-    it=\"${(P)1}\"
+    case $1 { (true|false) it=$1 ; return  ;; }
+    json/encode/_isanum $1 && {it=$1; return}
+    it=\"$1\"
 }
 
-json/encode/association () {
+json/% () {
     local it
-    % (${(Pkv)1}) {
-        json/encode/scalar v
-        argv+=\"$k\":$it
-    }
-    shift
-    l "{${(j:,:)@}}"
-}
+    my@ encoded
+    % { json/encode/scalar $v
+        encoded+=\"$k\":$it }
+    l "{${(j:,:)encoded}}" }
 
-json/encode/array () {
+json/@ () {
     local it
-    @ (${(P@)1}) {
-        json/encode/scalar it
-        argv+=$it
-    }
-    shift
-    l "[${(j:,:)@}]"
+    my@ encoded
+    @ { json/encode/scalar $it
+        encoded+=$it }
+    l "[${(j:,:)encoded}]"
 }
 
-json/encode () { json/encode/${(Pt)1%-*} $1 }
+json/encode/association () { json/% ${(Pkv)1} }
+json/encode/array       () { json/@ ${(P@)1}  }
+json/encode             () { json/encode/${(Pt)1%-*} $1 }
 
 
 

@@ -9,6 +9,17 @@ detect_numbers () {
         json/encode/_isanum $it
         not_ok "$it is not a num" } }
 
+json_encode_scalar () {
+    local desc from expected
+    for desc        from    expected (
+        'string'    'is'    '"is"'
+        'bool'      true    true
+        'num'       0       0
+        'positive'  42      42
+    ) { json/encode/scalar $from
+        is $it $expected "converting $desc $from (expecting $expected): $it" }
+}
+
 enode_simple_structures () {
     my@ fields=( true zeus 0 /bin/zsh )
     my% user=( login zeus id 0 shell /bin/zsh )
@@ -24,9 +35,9 @@ enode_simple_structures () {
 
 simple_json_encode () {
     detect_numbers
+    json_encode_scalar
     enode_simple_structures
 }
-
 
 TAP/prove simple_json_encode
 
