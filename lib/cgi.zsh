@@ -19,7 +19,7 @@ cgi/is_set () {
 cgi/get () {
     cgi/is_set || return
     @ (${(s:&:)QUERY_PARAMETERS})
-    % (${(s:=:)it}) { cgi/_url_encode $v | read GET\[$k] }
+        % (${(s:=:)it}) { cgi/_url_encode $v | read GET\[$k] }
 }
 
 cgi/post () {

@@ -1,1 +1,1 @@
-test: ; prove -ezsh -r t 
+test: ; prove -ezsh -r t
