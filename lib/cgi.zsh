@@ -13,7 +13,8 @@ cgi/_url_encode () {
 
 cgi/is_set () {
     (( $+QUERY_PARAMETERS )) || typeset -g QUERY_PARAMETERS
-    : ${QUERY_PARAMETERS:=${QUERY_STRING?neither QUERY_STRING or QUERY_PARAMETERS are set. are you inside a CGI ?}}
+    # : ${QUERY_PARAMETERS:=${QUERY_STRING?neither QUERY_STRING or QUERY_PARAMETERS are set. are you inside a CGI ?}}
+    : ${QUERY_PARAMETERS:=${QUERY_STRING:-}}
 }
 
 cgi/get () {
