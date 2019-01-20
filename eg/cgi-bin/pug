@@ -1,17 +1,20 @@
 #! /usr/bin/zsh
-
-uze cgi --params
-
+uze page
 pug <<.
-| HTTP/1.1 200 OK
-| Content-Type: text/html
+| HTTP/1.0 ${CODE:-200 OK}
+| Content-Type: ${TYPE:-text/html}
 | Connection: Closed
 |
 |
 doctype html
 html
     head
-        title hello darkness
+        title this is how you can render html using pug
     body
-        h1 hello ${USER:=mec}, tu m'as bien dit  "${Q[greetings]:=hello}" ?
+        h1 you can access to query params
+        pre.
+            hello \${USER:=mec},
+            tu m'as bien dit "\${Q[greetings]:=hello}" ?
+        p will render
+        code hello ${USER:=mec}, tu m'as bien dit  "${Q[greetings]:=hello}" ?
 .
