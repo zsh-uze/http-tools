@@ -1,22 +1,58 @@
 #! /usr/bin/zsh
+uze page # :all
 
-uze cgi --setup
+if { ${DEBUG=false} } {
+    page/text;
+    fmtr=(cat)
+} else {
+    page/ok;
+    fmtr=( pandoc -sf markdown  -t html5 )
+}
 
-cat <<.
-HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: Closed
+$fmtr <<.
+---
+title: exemple of cgi.zsh using pandoc
+author: marc chantreux
+---
 
-.
+this script shows how simple it is to create a web page by
 
-pandoc -sthtml5 <<.
+* shell scripting a markdown output
+* using pandoc to render html
 
-# hello ${Q[user]:=mec}
+set the \`\$DEBUG\` variable to release the pandoc source
+instead of the html content. you can also use
 
-you found me now
+    $DEBUG && exec 2>&1
 
-* learn html
-* learn shell
-* and hack
+to ouput the errors. as demo, see the content below
+
+# state of $(hostname)
+
+## memory
+
+$( # show some fields of vmstat
+
+    # show errors in the output
+    $DEBUG && exec 2>&1
+
+    woops
+
+    # will store the pairs (key/value) of vmstat
+    local -A vmstat
+
+    vmstat | {
+        read _                  # line 1: useless
+        read -A ifields         # line 2: keys
+        read vmstat\[$^ifields] # line 3: values
+    }
+    ofields=( free buff swpd )
+
+    # header
+    print "|${(j:|:)ofields}|"
+    print \|${(j::)${ofields/*/-|}}
+    # body
+    print -n "|"
+    for f ($ofields) print -n "$vmstat[$f]|" )
 
 .
